@@ -298,13 +298,9 @@ check_data() {
     kernel_from=($(
         cat ${model_conf} |
             sed -e 's/NA//g' -e 's/NULL//g' -e 's/[ ][ ]*//g' |
-            grep -E "^[^#].*${board_list}:" | awk -F':' '{print $9}' |
+            grep -E "^[^#].*${board_list}$" | awk -F':' '{print $9}' |
             sort -u | xargs
     ))
-    echo -e "${kernel_from}"
-    echo -e "${model_conf}"
-    echo -e "${board_list}"
-    echo -e "${#kernel_from[@]}"
     [[ "${#kernel_from[@]}" -eq 0 ]] && error_msg "Missing [ KERNEL_TAGS ] settings, stop building."
     # Replace custom kernel tags
     [[ -n "${kernel_usage}" ]] && {
